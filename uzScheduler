@@ -1,0 +1,162 @@
+#!/bin/bash
+
+# ./uzScheduler <Task File>
+
+TaskFile=$1
+
+dp=/sharedata/yxtang/XDA19090126Share
+sp=/work/yxtang/data
+
+# 1. acquire task
+
+task=""
+i=0
+
+echo
+echo "Task List:"
+echo "-----------------------------------------------------------------"
+while read line
+do
+    if [ ! -d $line ];
+    then
+        echo "Folder($line) does not exist!!! "
+    else
+        echo $line
+        task[$i]=$line
+        let i+=1
+    fi
+done < $TaskFile
+echo "-----------------------------------------------------------------"
+echo 
+
+# 2. acquire parameter
+
+totalNum=${#task[@]}
+
+echo "Task tatal number: $totalNum"
+echo
+
+# 3. job scheduler
+
+maxNodeNum=25 # max number of running tasks
+
+if [ ! -d log ];
+then
+    mkdir log
+    echo "make log directory..."
+    echo
+fi
+
+# 3.1
+
+jobid=""
+jobNum=0
+
+if [ $totalNum -le $maxNodeNum ];
+then
+    for((k=0;k<$totalNum;k++));
+    do
+        DATA_PATH=${task[$k]}
+        str=${DATA_PATH##*XDA19090126Share/}
+        SAVE_PATH=$sp/$str
+        logName=${DATA_PATH##*/}
+        jobInfo=`sbatch unzip-new.sbatch $DATA_PATH $SAVE_PATH`
+        jobid[$jobNum]=${jobInfo##* }
+        echo "  Submit: $DATA_PATH"
+        let jobNum+=1
+        
+        wait
+    done
+
+    echo "Total tasks: $totalNum    Submited Tasks: $jobNum"
+    echo
+    echo "Submit Jobs completed!"
+    echo
+
+    exit
+echo
+    
+fi
+
+for((k=0;k<$maxNodeNum;k++));
+do
+    DATA_PATH=${task[$k]}
+    str=${DATA_PATH##*XDA19090126Share/}
+    SAVE_PATH=$sp/$str
+    logName=${DATA_PATH##*/}
+    jobInfo=`sbatch unzip-new.sbatch $DATA_PATH $SAVE_PATH`
+    jobid[$jobNum]=${jobInfo##* }
+    echo "  Submit: $DATA_PATH"
+    #echo "${jobid[$jobNum]}"
+    let jobNum+=1
+    
+    wait
+done
+echo
+
+# 3.2
+
+while [ $jobNum -lt $totalNum ]
+do
+    sleep 10m
+    endNum=0
+    echo
+    for((j=0;j<$jobNum;j++));
+    do
+        echo "  check: ${jobid[$j]}.unzip"
+        let endNum+=`cat log/${jobid[$j]}.unzip|grep "Unzip: finished..."|wc -l`
+    done
+    echo "  endNum: $endNum"
+    
+    if [ $endNum -gt "0" ];
+    then
+        temp=$jobNum
+        runningNum=`expr $temp - $endNum`
+        submitedNum=$jobNum # number of submited jobs
+        unsubmitNum=`expr $totalNum - $submitedNum` # number of unsubmit jobs
+        nextSubmitNum=`expr $maxNodeNum - $runningNum`
+
+        if [ `expr $unsubmitNum + $runningNum` -lt $maxNodeNum ];
+        then
+            nextSubmitNum=$unsubmitNum
+        fi
+        
+        echo 
+        echo "  Total tasks: $totalNum    Submited Tasks: $submitedNum   Running Tasks: $runningNum    Finished Tasks: $endNum   Next Submit Tasks: $nextSubmitNum"
+        echo
+
+        for((i=0;i<$nextSubmitNum;i++));
+        do
+            DATA_PATH=${task[$jobNum]}
+            str=${DATA_PATH##*XDA19090126Share/}
+            SAVE_PATH=$sp/$str
+            logName=${DATA_PATH##*/}
+            jobInfo=`sbatch unzip-new.sbatch $DATA_PATH $SAVE_PATH`
+            jobid[$jobNum]=${jobInfo##* }
+            echo "  Submit: $DATA_PATH"
+            let jobNum+=1
+            
+            wait
+        done
+    else
+        echo "wait..."
+        echo
+    fi
+    
+done
+
+# 4 Information
+
+sleep 1m
+endNum=0
+for((j=0;j<$jobNum;j++));
+do
+    let endNum+=`cat log/${jobid[$j]}.unzip|grep "Unzip: finished..."|wc -l`
+done
+
+echo
+echo "Total tasks: $totalNum    Submited Tasks: $jobNum   Running Tasks: `expr $jobNum - $endNum`    Finished Tasks: $endNum"
+echo
+echo "Submit Jobs completed!"
+
+
