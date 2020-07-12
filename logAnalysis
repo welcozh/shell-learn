@@ -1,0 +1,103 @@
+#!/bin/bash
+
+logDP=$1
+
+if [ ! -d $logDP ];
+then
+    echo "Please input right log-folder!"
+    exit 0
+fi
+
+if [ -f example.csv ];
+then
+    echo "Delete file with same name!"
+    rm example.csv
+fi
+
+echo Orbit, Phase1, InSARPair, S1TopoPhase, Phase2, S1SimDEM, MeanCoh, Musk, PSC, triEdgeEst, Integration, Point, Numsar, Masterid > example.csv
+
+
+for i in `ls $logDP`;
+do
+    fp=$logDP/$i
+
+    orbit=${i%%_*}
+    
+    tmp=`cat $fp|grep "(Phase1: Compute and Merge) The time:"`
+    tmp1=${tmp##*: }
+    phase1=${tmp1%%s*}
+    if [ -z "$phase1" ];
+    then
+        phase1="xxx"
+    fi
+
+    tmp=`cat $fp|grep "(InSARPairGen) The time is:"`
+    tmp1=${tmp##*: }
+    insarpairgen=${tmp1%%s*}
+    if [ -z "$insarpairgen" ];
+    then
+        insarpairgen="xxx"
+    fi
+
+    tmp=`cat $fp|grep "(S1TopoPhase) The time:"`
+    tmp1=${tmp##*: }
+    s1topophase=${tmp1%%s*}
+    if [ -z $s1topophase ];
+    then
+        s1topophase="xxx"
+    fi
+
+    tmp=`cat $fp|grep "(S1Coh/S1BaseLine/ComplexPro) The time:"`
+    tmp1=${tmp##*: }
+    phase2=${tmp1%%s*}
+    if [ -z "$phase2" ];
+    then
+        phase2="xxx"
+    fi
+    
+    tmp=`cat $fp|grep "(S1SimDem) The time is:"`
+    tmp1=${tmp##*: }
+    s1simdem=${tmp1%%s*}
+    if [ -z "$s1simdem" ];
+    then
+        s1simdem="xxx"
+    fi
+    
+    tmp=`cat $fp|grep "(MeanCoh) The running time is:"`
+    tmp1=${tmp##*: }
+    meancoh=${tmp1%%s*}
+    if [ -z "$meancoh" ];
+    then
+        meancoh="xxx"
+    fi
+
+    tmp=`cat $fp|grep "(Musk) The running time is:"`
+    tmp1=${tmp##*: }
+    musk=${tmp1%%s*}
+    if [ -z "$musk" ];
+    then
+        musk="xxx"
+    fi
+
+    tmp=`cat $fp|grep "(PSC) The running time is:"`
+    tmp1=${tmp##*: }
+    psc=${tmp1%%s*}
+    if [ -z "$psc" ];
+    then
+        psc="xxx"
+    fi
+    
+    tmp=`cat $fp|grep "(triEdgeEst) The running time is:"`
+    tmp1=${tmp##*: }
+    triedgeest=${tmp1%%s*}
+    if [ -z "$triedgeest" ];
+    then
+        triedgeest="xxx"
+    fi
+
+    echo $orbit, $phase1, $insarpairgen, $s1topophase, $phase2, $s1simdem, $meancoh, $musk, $psc, $triedgeest >> example.csv
+
+done
+
+
+
