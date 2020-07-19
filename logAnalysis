@@ -15,7 +15,7 @@ then
     rm $filename
 fi
 
-echo Orbit, Phase1, InSARPair, S1TopoPhase, Phase2, S1SimDEM, MeanCoh, Musk, PSC, triEdgeEst, Integration, Point, Numsar, Masterid > $filename
+echo Orbit, Phase1, InSARPair, S1TopoPhase, Phase2, S1SimDEM, MeanCoh, Musk, PSC, triEdgeEst, Integration, Total, Numsar, Masterid, Point > $filename
 
 
 for i in `ls $logDP`;
@@ -96,7 +96,21 @@ do
         triedgeest="xxx"
     fi
 
-    echo $orbit, $phase1, $insarpairgen, $s1topophase, $phase2, $s1simdem, $meancoh, $musk, $psc, $triedgeest >> $filename
+    tmp=`cat $fp|grep "NUMSAR = "`
+    numsar=${tmp##* }
+    if [ -z "$numsar" ];
+    then
+        numsar="xxx"
+    fi
+    
+    tmp=`cat $fp|grep "MASTER_ID = "`
+    masterid=${tmp##* }
+    if [ -z "$masterid" ];
+    then
+        masterid="xxx"
+    fi
+    
+    echo $orbit, $phase1, $insarpairgen, $s1topophase, $phase2, $s1simdem, $meancoh, $musk, $psc, $triedgeest, , , $numsar, $masterid >> $filename
 
 done
 
