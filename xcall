@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#1 获取主机名，保存在yc1的~/.xhosts中
+if [ -z $X_HOSTFILE ]; then
+    X_HOSTFILE=~/.xhosts
+fi
+
+if [ ! -f $X_HOSTFILE ]; then
+    echo "$X_HOSTFILE not found. "
+    exit -1
+fi
+
+user=`whoami`
+
+#2 循环
+for host in $(cat $X_HOSTFILE); do
+    echo ---------------- $host ----------------
+    ssh $user@$host $@
+
+done
+wait
+
