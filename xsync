@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#1 获取主机名，保存在yc1的~/.xhosts中
+if [ -z $X_HOSTFILE ]; then
+    X_HOSTFILE=~/.xhosts
+fi
+
+if [ ! -f $X_HOSTFILE ]; then
+    echo "$X_HOSTFILE not found. "
+    exit -1
+fi
+
+echo "X_HOSTFILE: $X_HOSTFILE"
+
+#2 获取文件名称
+p1=$1
+fname=`basename $p1`
+echo fname=$fname
+
+#3 获取上级目录到绝对路径
+pdir=`cd -P $(dirname $p1); pwd`
+echo pdir=$pdir
+
+#4 用户
+user=`whoami`
+
+#4 循环
+for host in $(cat $X_HOSTFILE); do
+    echo ---------------- $host ----------------
+    rsync -rvl $pdir/$fname $user@$host:$pdir
+    echo
+done
+
