@@ -52,11 +52,21 @@ fi
 
 user=`whoami`
 
-for ((i=0;i<${#host[@]};i++));
+for ((i=0;i<1;i++));
 do
-    cmd="cd ~/github/InSAR-optimization/InSAR; nohup sh main.sh /home/$user/data/${orbit[$i]} &"
-    echo ---------------- ${host[$i]} ----------------
-    ssh $user@${host[$i]} $cmd
+    cmd="cd /home/$user/github/InSAR-optimization/InSAR; nohup sh main.sh /home/$user/data/${orbit[$i]} >/dev/null 2>&1 &"
+    echo "-------------------------------------------"
+    echo "Host ID: ${host[$i]} "
+    echo "Data path: /home/$user/data/${orbit[$i]}" 
+    echo "-------------------------------------------"
+    echo 
+
+    ssh $user@${host[$i]}<<EOF
+        cd /home/$user/github/InSAR-optimization/InSAR
+        nohup sh main.sh /home/$user/data/${orbit[$i]} >run.log 2>&1 &
+        exit
+EOF
+
 done
 
 
