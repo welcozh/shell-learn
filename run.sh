@@ -50,9 +50,14 @@ else
     exit -1
 fi
 
+user=`whoami`
 
 for ((i=0;i<${#host[@]};i++));
 do
-    echo ${host[$i]}
-    echo ${orbit[$i]}
+    cmd="cd ~/github/InSAR-optimization/InSAR; nohup sh main.sh /home/$user/data/${orbit[$i]} &"
+    echo ---------------- ${host[$i]} ----------------
+    ssh $user@${host[$i]} $cmd
 done
+
+
+
