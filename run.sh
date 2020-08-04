@@ -50,9 +50,24 @@ else
     exit -1
 fi
 
+user=`whoami`
 
-for ((i=0;i<${#host[@]};i++));
+for ((i=0;i<1;i++));
 do
-    echo ${host[$i]}
-    echo ${orbit[$i]}
+    cmd="cd /home/$user/github/InSAR-optimization/InSAR; nohup sh main.sh /home/$user/data/${orbit[$i]} >/dev/null 2>&1 &"
+    echo "-------------------------------------------"
+    echo "Host ID: ${host[$i]} "
+    echo "Data path: /home/$user/data/${orbit[$i]}" 
+    echo "-------------------------------------------"
+    echo 
+
+    ssh $user@${host[$i]}<<EOF
+        cd /home/$user/github/InSAR-optimization/InSAR
+        nohup sh main.sh /home/$user/data/${orbit[$i]} >run.log 2>&1 &
+        exit
+EOF
+
 done
+
+
+
