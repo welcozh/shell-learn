@@ -1,0 +1,24 @@
+#!/bin/bash
+
+file=$1
+
+path1="/mnt/sdc1/zhangweikang/data/"
+path2="/mnt/sdc1/zhangweikang/sample/"
+
+date=("20180912/" "20180924/" "20181006/" "20181018/")
+iw=("IW1/" "IW2/" "IW3/")
+burst=("-1.rmg" "-2.rmg" "-3.rmg" "-4.rmg" "-5.rmg" "-6.rmg" "-7.rmg" "-8.rmg" "-9.rmg")
+
+for i in ${date[@]}; 
+do
+    for j in ${iw[@]}; 
+    do
+        for k in ${burst[@]}; 
+        do
+            echo $path1$i$j$file$k   $path2$i$j$file$k
+            cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
+            echo $cmd
+        done
+    done
+done
+
