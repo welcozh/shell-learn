@@ -1,24 +1,43 @@
 #!/bin/bash
 
-file=$1
+path=$1
+step=$2
 
-path1="/mnt/sdc1/zhangweikang/data/"
-path2="/mnt/sdc1/zhangweikang/sample/"
+path1=$path/data/
+path2=$path/sample/
 
 date=("20180912/" "20180924/" "20181006/" "20181018/")
 iw=("IW1/" "IW2/" "IW3/")
-burst=("-1.rmg" "-2.rmg" "-3.rmg" "-4.rmg" "-5.rmg" "-6.rmg" "-7.rmg" "-8.rmg" "-9.rmg")
+burst=("burst-1.rmg" "burst-2.rmg" "burst-3.rmg" "burst-4.rmg" "burst-5.rmg" "burst-6.rmg" "burst-7.rmg" "burst-8.rmg" "burst-9.rmg")
 
-for i in ${date[@]}; 
-do
-    for j in ${iw[@]}; 
+if [ "$step" == "2" ]; 
+then
+    for i in ${date[@]}; 
     do
-        for k in ${burst[@]}; 
+        for j in ${iw[@]}; 
         do
-            echo $path1$i$j$file$k   $path2$i$j$file$k
-            cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
-            echo $cmd
+            for k in ${burst[@]}; 
+            do
+                echo $path1$i$j$file$k   $path2$i$j$file$k
+                cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
+                echo $cmd
+            done
         done
     done
-done
+fi
 
+
+if [ "$step" == "3" ]; 
+then
+    str="dcPara.rmg"
+    for i in ${date[@]}; 
+    do
+        for j in ${iw[@]}; 
+        do
+            echo $path1$i$j$file$str   $path2$i$j$file$str
+            cmd=`diff $path1$i$j$str $path2$i$j$file$str`
+            echo $cmd
+            
+        done
+    done
+fi
