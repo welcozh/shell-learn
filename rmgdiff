@@ -9,6 +9,7 @@ path2=$path/sample/
 date=("20180912/" "20180924/" "20181006/" "20181018/")
 iw=("IW1/" "IW2/" "IW3/")
 burst=("burst-1.rmg" "burst-2.rmg" "burst-3.rmg" "burst-4.rmg" "burst-5.rmg" "burst-6.rmg" "burst-7.rmg" "burst-8.rmg" "burst-9.rmg")
+derampPhase=("derampPhase-1.rmg" "derampPhase-2.rmg" "derampPhase-3.rmg" "derampPhase-4.rmg" "derampPhase-5.rmg" "derampPhase-6.rmg" "derampPhase-7.rmg" "derampPhase-8.rmg" "derampPhase-9.rmg") 
 
 if [ "$step" == "2" ]; 
 then
@@ -38,6 +39,22 @@ then
             cmd=`diff $path1$i$j$str $path2$i$j$file$str`
             echo $cmd
             
+        done
+    done
+fi
+
+if [ "$step" == "4" ]; 
+then
+    for i in ${date[@]}; 
+    do
+        for j in ${iw[@]}; 
+        do
+            for k in ${derampPhase[@]}; 
+            do
+                echo $path1$i$j$file$k   $path2$i$j$file$k
+                cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
+                echo $cmd
+            done
         done
     done
 fi
