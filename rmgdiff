@@ -82,7 +82,7 @@ then
     done
 fi
 
-if [ "$step" == "5" ]; 
+if [ "$step" == "6" ]; 
 then
     for i in ${date[@]}; 
     do
@@ -98,7 +98,7 @@ then
     done
 fi
 
-if [ "$step" == "5" ]; 
+if [ "$step" == "6" ]; 
 then
     for i in ${date[@]}; 
     do
