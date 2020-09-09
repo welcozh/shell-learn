@@ -17,6 +17,8 @@ bDerampFine=("bDerampFine-1.rmg" "bDerampFine-2.rmg" "bDerampFine-3.rmg" "bDeram
 
 dePhaseFine=("dePhaseFine-1.rmg" "dePhaseFine-2.rmg" "dePhaseFine-3.rmg" "dePhaseFine-4.rmg" "dePhaseFine-5.rmg" "dePhaseFine-6.rmg" "dePhaseFine-7.rmg" "dePhaseFine-8.rmg" "dePhaseFine-9.rmg")
 
+bDerampFineRe=("bDerampFineRe-1.rmg" "bDerampFineRe-2.rmg" "bDerampFineRe-3.rmg" "bDerampFineRe-4.rmg" "bDerampFineRe-5.rmg" "bDerampFineRe-6.rmg" "bDerampFineRe-7.rmg" "bDerampFineRe-8.rmg" "bDerampFineRe-9.rmg")
+
 if [ "$step" == "2" ];
 then
     for i in ${date[@]}; 
@@ -51,7 +53,7 @@ fi
 
 if [ "$step" == "4" ]; 
 then
-    for i in ${date[@]}; 
+    for i in ${date[@]:1:3};
     do
         for j in ${iw[@]}; 
         do
@@ -68,11 +70,11 @@ fi
 
 if [ "$step" == "5" ]; 
 then
-    for i in ${date[@]}; 
+    for i in ${date[@]:1:3};
     do
         for j in ${iw[@]}; 
         do
-            for k in ${bDe[@]}; 
+            for k in ${bDe[@]};
             do
                 echo $path1$i$j$file$k   $path2$i$j$file$k
                 cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
@@ -84,7 +86,7 @@ fi
 
 if [ "$step" == "6" ]; 
 then
-    for i in ${date[@]}; 
+    for i in ${date[@]:1:3};
     do
         for j in ${iw[@]}; 
         do
@@ -100,11 +102,27 @@ fi
 
 if [ "$step" == "6" ]; 
 then
-    for i in ${date[@]}; 
+    for i in ${date[@]:1:3};
     do
         for j in ${iw[@]}; 
         do
             for k in ${dePhaseFine[@]}; 
+            do
+                echo $path1$i$j$file$k   $path2$i$j$file$k
+                cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
+                echo $cmd
+            done
+        done
+    done
+fi
+
+if [ "$step" == "7" ]; 
+then
+    for i in ${date[@]:1:3};
+    do
+        for j in ${iw[@]}; 
+        do
+            for k in ${bDerampFineRe[@]}; 
             do
                 echo $path1$i$j$file$k   $path2$i$j$file$k
                 cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
