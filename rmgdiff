@@ -131,3 +131,16 @@ then
         done
     done
 fi
+
+if [ "$step" == "8" ]; 
+then
+    for i in ${date[@]};
+    do
+        for j in ${iw[@]}; 
+        do
+            echo ${path1}${i}${j}${file}IWpj.rmg   ${path2}${i}${j}${file}/IWpj.rmg
+            cmd=`diff ${path1}${i}${j}${file}/IWpj.rmg ${path2}${i}${j}${file}/IWpj.rmg`
+            echo $cmd
+        done
+    done
+fi
