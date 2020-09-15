@@ -6,7 +6,7 @@ step=$2
 path1=$path/data/
 path2=$path/sample/
 
-date=("20180912/" "20180924/" "20181006/" "20181018/")
+date=("20180912" "20180924" "20181006" "20181018")
 iw=("IW1/" "IW2/" "IW3/")
 burst=("burst-1.rmg" "burst-2.rmg" "burst-3.rmg" "burst-4.rmg" "burst-5.rmg" "burst-6.rmg" "burst-7.rmg" "burst-8.rmg" "burst-9.rmg")
 derampPhase=("derampPhase-1.rmg" "derampPhase-2.rmg" "derampPhase-3.rmg" "derampPhase-4.rmg" "derampPhase-5.rmg" "derampPhase-6.rmg" "derampPhase-7.rmg" "derampPhase-8.rmg" "derampPhase-9.rmg") 
@@ -27,8 +27,8 @@ then
         do
             for k in ${burst[@]}; 
             do
-                echo $path1$i$j$file$k   $path2$i$j$file$k
-                cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
+                echo $path1$i/$j$k   $path2$i/$j$k
+                cmd=`diff $path1$i/$j$k $path2$i/$j$k`
                 echo $cmd
             done
         done
@@ -43,8 +43,8 @@ then
     do
         for j in ${iw[@]}; 
         do
-            echo $path1$i$j$file$str   $path2$i$j$file$str
-            cmd=`diff $path1$i$j$str $path2$i$j$file$str`
+            echo $path1$i/$j$str   $path2$i/$j$str
+            cmd=`diff $path1$i/$j$str $path2$i/$j$str`
             echo $cmd
             
         done
@@ -59,8 +59,8 @@ then
         do
             for k in ${derampPhase[@]}; 
             do
-                echo $path1$i$j$file$k   $path2$i$j$file$k
-                cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
+                echo $path1$i/$j$k   $path2$i/$j$k
+                cmd=`diff $path1$i/$j$k $path2$i/$j$k`
                 echo $cmd
             done
         done
@@ -76,8 +76,8 @@ then
         do
             for k in ${bDe[@]};
             do
-                echo $path1$i$j$file$k   $path2$i$j$file$k
-                cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
+                echo $path1$i/$j$k   $path2$i/$j$k
+                cmd=`diff $path1$i/$j$k $path2$i/$j$k`
                 echo $cmd
             done
         done
@@ -92,8 +92,8 @@ then
         do
             for k in ${bDerampFine[@]}; 
             do
-                echo $path1$i$j$file$k   $path2$i$j$file$k
-                cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
+                echo $path1$i/$j$k   $path2$i/$j$k
+                cmd=`diff $path1$i/$j$k $path2$i/$j$k`
                 echo $cmd
             done
         done
@@ -108,8 +108,8 @@ then
         do
             for k in ${dePhaseFine[@]}; 
             do
-                echo $path1$i$j$file$k   $path2$i$j$file$k
-                cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
+                echo $path1$i/$j$k   $path2$i/$j$k
+                cmd=`diff $path1$i/$j$k $path2$i/$j$k`
                 echo $cmd
             done
         done
@@ -124,8 +124,8 @@ then
         do
             for k in ${bDerampFineRe[@]}; 
             do
-                echo $path1$i$j$file$k   $path2$i$j$file$k
-                cmd=`diff $path1$i$j$file$k $path2$i$j$file$k`
+                echo $path1$i/$j$k   $path2$i/$j$k
+                cmd=`diff $path1$i/$j$k $path2$i/$j$k`
                 echo $cmd
             done
         done
@@ -138,9 +138,20 @@ then
     do
         for j in ${iw[@]}; 
         do
-            echo ${path1}${i}${j}${file}IWpj.rmg   ${path2}${i}${j}${file}/IWpj.rmg
-            cmd=`diff ${path1}${i}${j}${file}/IWpj.rmg ${path2}${i}${j}${file}/IWpj.rmg`
+            echo ${path1}${i}/${j}IWpj.rmg   ${path2}${i}/${j}IWpj.rmg
+            cmd=`diff ${path1}${i}/${j}IWpj.rmg ${path2}${i}/${j}IWpj.rmg`
             echo $cmd
         done
     done
 fi
+
+if [ "$step" == "9" ]; 
+then
+    for i in ${date[@]};
+    do
+        echo ${path1}fineReg/${i}.rmg   ${path2}fineReg/${i}.rmg
+        cmd=`diff ${path1}fineReg/${i}.rmg ${path2}fineReg/${i}.rmg`
+        echo $cmd
+    done
+fi
+
