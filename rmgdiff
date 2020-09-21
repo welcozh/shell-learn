@@ -19,6 +19,19 @@ dePhaseFine=("dePhaseFine-1.rmg" "dePhaseFine-2.rmg" "dePhaseFine-3.rmg" "dePhas
 
 bDerampFineRe=("bDerampFineRe-1.rmg" "bDerampFineRe-2.rmg" "bDerampFineRe-3.rmg" "bDerampFineRe-4.rmg" "bDerampFineRe-5.rmg" "bDerampFineRe-6.rmg" "bDerampFineRe-7.rmg" "bDerampFineRe-8.rmg" "bDerampFineRe-9.rmg")
 
+if [ "$step" == "0" ]; 
+then
+    for i in ${date[@]};
+    do
+        for j in ${iw[@]}; 
+        do
+            echo ${path1}${i}/${j}iw.rmg   ${path2}${i}/${j}iw.rmg
+            cmd=`diff ${path1}${i}/${j}iw.rmg ${path2}${i}/${j}iw.rmg`
+            echo $cmd
+        done
+    done
+fi
+
 if [ "$step" == "2" ];
 then
     for i in ${date[@]}; 
