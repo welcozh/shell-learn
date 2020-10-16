@@ -1,0 +1,40 @@
+#!/bin/bash
+
+path1=$1
+path2=$2
+
+
+for file in $path1/*.rmg; 
+do
+    echo $file  $path2/${file##*/}
+    cmd=`diff $file $path2/${file##*/}`
+    echo $cmd
+done
+
+
+for file in $path1/*.ldr; 
+do
+    echo $file  $path2/${file##*/}
+    cmd=`diff $file $path2/${file##*/}`
+    echo $cmd
+done
+# for i in ${date[@]};
+# do
+#    for j in ${iw[@]}; 
+#    do
+#        echo ${path1}${i}/${j}IWpj.rmg   ${path2}${i}/${j}IWpj.rmg
+#        cmd=`diff ${path1}${i}/${j}IWpj.rmg ${path2}${i}/${j}IWpj.rmg`
+#        echo $cmd
+#    done
+# done
+
+# if [ "$step" == "9" ]; 
+# then
+#    for i in ${date[@]};
+#     do
+#        echo ${path1}fineReg/${i}.rmg   ${path2}fineReg/${i}.rmg
+#        cmd=`diff ${path1}fineReg/${i}.rmg ${path2}fineReg/${i}.rmg`
+#        echo $cmd
+#    done
+# fi
+
