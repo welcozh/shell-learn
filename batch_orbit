@@ -1,5 +1,4 @@
 #!/bin/bash
-# Usage: ./batch_orbit /sharedata/yxtang/XDA19090126Share
 
 PATH=$1
 
