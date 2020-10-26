@@ -38,7 +38,7 @@ do
         do
             if [ -d $k ];
             then
-                if [ ! -f $k/orbit ];
+                if [ ! -d $k/orbit ];
                 then
                     echo $k: orbit-----------No
                 else
