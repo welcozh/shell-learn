@@ -1,0 +1,85 @@
+#!/bin/bash
+# Usage: ./batch_orbit /sharedata/yxtang/XDA19090126Share
+
+PATH=$1
+
+# Subsidence
+folder=("center-west" "NorthEast" "Tanwan" "west")
+
+echo --------------------Subsidence Start-----------------------
+for i in ${folder[@]};
+do
+    echo $i:
+    for j in $PATH/Subsidence/$i/*;
+    do
+        if [ -d $j ];
+        then
+            for k in $j/*;
+            do
+                if [ -d $k ];
+                then
+                    if [ ! -d $k/orbit ];
+                    then
+                        echo $k: orbit-----------No
+                    else
+                        echo $k: orbit-----------Yes
+                    fi
+                fi
+            done
+        fi
+    done
+done
+
+echo "HuaBei"
+for j in $PATH/Subsidence/HuaBei/Sentinel-1/*;
+do
+    if [ -d $j ];
+    then
+        for k in $j/*;
+        do
+            if [ -d $k ];
+            then
+                if [ ! -f $k/orbit ];
+                then
+                    echo $k: orbit-----------No
+                else
+                    echo $k: orbit-----------Yes
+                fi
+            fi
+        done
+    fi
+done
+
+echo --------------------Subsidence End------------------------
+
+echo ""
+
+# Subsidence2
+folder2=("NorthEast" "West")
+
+echo --------------------Subsidence-2 Start--------------------
+for i in ${folder2[@]};
+do
+    echo $i
+    for j in $PATH/Subsidence-2/$i/*;
+    do
+        if [ -d $j ];
+        then
+            for k in $j/*;
+            do
+                if [ -d $k ];
+                then
+                    if [ ! -d $k/orbit ];
+                    then
+                        echo $k: orbit-----------No
+                    else
+                        echo $k: orbit-----------Yes
+                    fi
+                fi
+            done
+        fi
+    done
+done
+
+echo --------------------Subsidence-2 End---------------------
+
