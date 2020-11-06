@@ -3,7 +3,7 @@
 path1=$1
 path2=$2
 
-for i in $path1/Inf/*.rmg;
+for i in $path1/Inf/*;
 do
     echo $i $path2/Inf/${i##*/}
     cmd=`diff $i $path2/Inf/${i##*/}`
