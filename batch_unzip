@@ -1,0 +1,93 @@
+#!/bin/bash
+
+part=$1
+
+DATA=/sharedata/yxtang/XDA19090126Share
+SAVE=/work/yxtang
+
+Subsidence=Subsidence
+Subsidence2=Subsidence-2
+
+# Subsidence
+
+CenterWest=("Orbit113" "orbit128" "orbit157" "orbit55" "Orbit84")
+HuaBei=("Orbit-11" "Orbit-142" "Orbit-171" "Orbit-40" "Orbit-69")
+NorthEast=()
+Tanwan=("orbit-105")
+west=("orbit-12" "orbit-129" "orbit-143" "orbit-172" "orbit-26" "orbit-27" "orbit-41" "orbit-70" "orbit-99")
+
+# Subsidence-2
+
+NorthEast2=("Orbit-105" "Orbit-134" "Orbit-149" "Orbit-32" "Orbit-47" "Orbit-61" "Orbit-76")
+West=("orbit-114" "orbit-158" "orbit-56" "orbit-85")
+
+
+
+if [ $part = "CenterWest" ];
+then
+    for i in ${CenterWest[@]};
+    do
+        DATA_PATH=$DATA/$Subsidence/center-west/$i
+        SAVE_PATH=$SAVE/$Subsidence/center-west/$i
+        sbatch unzip.sbatch $DATA_PATH $SAVE_PATH &
+    done
+fi
+
+if [ $part = "HuaBei" ];
+then
+    for i in ${HuaBei[@]};
+    do
+        DATA_PATH=$DATA/$Subsidence/HuaBei/Sentinel-1/$i
+        SAVE_PATH=$SAVE/$Subsidence/HuaBei/Sentinel-1/$i
+        sbatch unzip.sbatch $DATA_PATH $SAVE_PATH &
+    done
+fi
+
+if [ $part = "NorthEast" ];
+then
+    DATA_PATH=$DATA/$Subsidence/NorthEast
+    SAVE_PATH=$SAVE/$Subsidence/NorthEast
+    sbatch unzip.sbatch $DATA_PATH $SAVE_PATH
+fi
+
+if [ $part = "Tanwan" ];
+then
+    for i in ${Tanwan[@]};
+    do
+        DATA_PATH=$DATA/$Subsidence/Tanwan/$i
+        SAVE_PATH=$SAVE/$Subsidence/Tanwan/$i
+        sbatch unzip.sbatch $DATA_PATH $SAVE_PATH &
+    done
+fi
+
+if [ $part = "west" ];
+then
+    for i in ${west[@]};
+    do
+        DATA_PATH=$DATA/$Subsidence/west/$i
+        SAVE_PATH=$SAVE/$Subsidence/west/$i
+        sbatch unzip.sbatch $DATA_PATH $SAVE_PATH &
+    done
+fi
+
+if [ $part = "NorthEast2" ];
+then
+    for i in ${NorthEast2[@]};
+    do
+        DATA_PATH=$DATA/$Subsidence2/NorthEast/$i
+        SAVE_PATH=$SAVE/$Subsidence2/NorthEast/$i
+        sbatch unzip.sbatch $DATA_PATH $SAVE_PATH &
+    done
+fi
+
+if [ $part = "West" ];
+then
+    for i in ${West[@]};
+    do
+        DATA_PATH=$DATA/$Subsidence2/West/$i
+        SAVE_PATH=$SAVE/$Subsidence2/West/$i
+        sbatch unzip.sbatch $DATA_PATH $SAVE_PATH &
+    done
+fi
+
+wait
