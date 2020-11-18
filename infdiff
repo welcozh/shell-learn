@@ -3,10 +3,10 @@
 path1=$1
 path2=$2
 
-for i in $path1/Inf/*;
+for i in $path1/*;
 do
-    echo $i $path2/Inf/${i##*/}
-    cmd=`diff $i $path2/Inf/${i##*/}`
+    echo $i $path2/${i##*/}
+    cmd=`diff $i $path2/${i##*/}`
     echo $cmd
 done
 
