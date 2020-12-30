@@ -1,0 +1,28 @@
+#!/bin/bash
+# copy result files in a specified folder
+
+DATA_PATH=$1
+SAVE_PATH=$2
+
+for i in $DATA_PATH/*;
+do
+    if [ -d $i ];
+    then
+        file=${i##*/}
+        echo $file
+        if [ ! -d $SAVE_PATH/$file ];
+        then
+            echo "make dir: $SAVE_PATH/$file"
+            mkdir $SAVE_PATH/$file
+            echo "copy files: $i/Inf/psc.* and $i/Inf/Edge.*"
+            cp $i/Inf/psc.* $i/Inf/Edge.* $SAVE_PATH/$file
+        else
+            echo "copy files: $i/Inf/psc.* and $i/Inf/Edge.*"
+            cp $i/Inf/psc.* $i/Inf/Edge.* $SAVE_PATH/$file
+        fi
+    fi
+done
+
+
+
+
