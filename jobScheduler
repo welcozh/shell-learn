@@ -6,7 +6,9 @@
 task=""
 i=0;
 
+echo
 echo "Task List:"
+echo "-----------------------------------------------------------------"
 while read line
 do
     if [ ! -d $line ];
@@ -18,6 +20,7 @@ do
         let i+=1
     fi
 done < task.txt
+echo "-----------------------------------------------------------------"
 echo 
 
 # 2. acquire parameter
@@ -67,14 +70,25 @@ do
     if [ $endNum -gt "0" ];
     then
         temp=$jobNum
-        if [ $temp == $endNum ];
-        then
-            numSubmit=$runNum
-        else
-            let numSubmit=$temp-$endNum
-        fi
+        temp=`expr $temp - $endNum`
         
-        echo "  Total tasks: $totalNum    Submit Tasks: $jobNum   Running Tasks: `expr $jobNum - $endNum`    Finished Tasks: $endNum   Next SubmitTasks: $numSubmit"
+        numSubmit=`expr $runNum - $temp`
+        
+        uncompletedNum=`expr $totalNum - $endNum` 
+
+        if [ $uncompletedNum -lt $runNum ];
+        then
+            numSubmit=$uncompletedNum
+        fi
+        #if [ $temp == $endNum ];
+        #then
+        #    numSubmit=$runNum
+        #else
+        #    numSubmit=`expr $runNum - ( $temp - $endNum )`
+        #fi
+        
+        echo 
+        echo "  Total tasks: $totalNum    Submited Tasks: $jobNum   Running Tasks: `expr $jobNum - $endNum`    Finished Tasks: $endNum   Next Submit Tasks: $numSubmit"
         echo
 
         for((i=0;i<$numSubmit;i++));
@@ -98,11 +112,9 @@ done
 endNum=`cat jobid/*.job|grep "Task End"|wc -l`
 
 echo
-echo "Total tasks: $totalNum    Submit Tasks: $jobNum   Running Tasks: `expr $jobNum - $endNum`    Finished Tasks: $endNum"
+echo "Total tasks: $totalNum    Submited Tasks: $jobNum   Running Tasks: `expr $jobNum - $endNum`    Finished Tasks: $endNum"
 echo
 echo "Submit Jobs completed!"
-
-
 
 
 
