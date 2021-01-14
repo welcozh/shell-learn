@@ -1,0 +1,108 @@
+#!/bin/bash
+
+
+# 1. acquire task
+
+task=""
+i=0;
+
+echo "Task List:"
+while read line
+do
+    if [ ! -d $line ];
+    then
+        echo "Floder($line) does not exist!!! "
+    else
+        echo $line
+        task[$i]=$line
+        let i+=1
+    fi
+done < task.txt
+echo 
+
+# 2. acquire parameter
+
+totalNum=${#task[@]}
+
+#for((j=0;j<$totalNum;j++));
+#do
+#    tt=${task[$j]}
+#    echo $tt
+#    logName=${tt##*/}
+#    echo "Log file Name: $logName"
+#done
+
+echo "Task tatal number: $totalNum"
+echo
+
+# 3. job scheduler
+
+runNum=3 # max number of running tasks
+
+# 3.1
+
+jobid=""
+jobNum=0
+
+for((k=0;k<$runNum;k++));
+do
+    DATA_PATH=${task[$k]}
+    logName=${DATA_PATH##*/}
+    jobInfo=`sbatch job1.sbatch $DATA_PATH log/${logName}`
+    jobid[$jobNum]=${jobInfo##* }
+    echo "  Submit: $DATA_PATH"
+    #echo "${jobid[$jobNum]}"
+    let jobNum+=1
+    
+    wait
+done
+echo
+
+# 3.2
+
+while [ $jobNum -lt $totalNum ]
+do
+    sleep 20s
+    endNum=`cat jobid/*.job|grep "Task End"|wc -l`
+    if [ $endNum -gt "0" ];
+    then
+        temp=$jobNum
+        if [ $temp == $endNum ];
+        then
+            numSubmit=$runNum
+        else
+            let numSubmit=$temp-$endNum
+        fi
+        
+        echo "  Total tasks: $totalNum    Submit Tasks: $jobNum   Running Tasks: `expr $jobNum - $endNum`    Finished Tasks: $endNum   Next SubmitTasks: $numSubmit"
+        echo
+
+        for((i=0;i<$numSubmit;i++));
+        do
+            DATA_PATH=${task[$jobNum]}
+            logName=${DATA_PATH##*/}
+            jobInfo=`sbatch job1.sbatch $DATA_PATH log/${logName}`
+            jobid[$jobNum]=${jobInfo##* }
+            echo "  Submit: $DATA_PATH"
+            let jobNum+=1
+            
+            wait
+        done
+    else
+        echo "wait..."
+        echo
+    fi
+    
+done
+
+endNum=`cat jobid/*.job|grep "Task End"|wc -l`
+
+echo
+echo "Total tasks: $totalNum    Submit Tasks: $jobNum   Running Tasks: `expr $jobNum - $endNum`    Finished Tasks: $endNum"
+echo
+echo "Submit Jobs completed!"
+
+
+
+
+
