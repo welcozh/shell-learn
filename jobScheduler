@@ -4,7 +4,7 @@
 # 1. acquire task
 
 task=""
-i=0;
+i=0
 
 echo
 echo "Task List:"
@@ -90,13 +90,21 @@ echo
 while [ $jobNum -lt $totalNum ]
 do
     sleep 10m
-    endNum=`cat jobid/*.job|grep "Task End"|wc -l`
+    endNum=0
+    echo
+    for((j=0;j<$jobNum;j++));
+    do
+        echo "  check: ${jobid[$j]}.job"
+        let endNum+=`cat jobid/${jobid[$j]}.job|grep "Task End"|wc -l`
+    done
+    echo "  endNum: $endNum"
+    #endNum=`cat jobid/*.job|grep "Task End"|wc -l`
     if [ $endNum -gt "0" ];
     then
         temp=$jobNum
         runningNum=`expr $temp - $endNum`
         submitedNum=$jobNum # number of submited jobs
-        unsubmitNum=`expr $totalNum - $endNum` # number of unsubmit jobs
+        unsubmitNum=`expr $totalNum - $submitedNum` # number of unsubmit jobs
         nextSubmitNum=`expr $maxNodeNum - $runningNum`
 
         if [ `expr $unsubmitNum + $runningNum` -lt $maxNodeNum ];
@@ -128,7 +136,13 @@ done
 
 # 4 Information
 
-endNum=`cat jobid/*.job|grep "Task End"|wc -l`
+sleep 1m
+endNum=0
+for((j=0;j<$jobNum;j++));
+do
+    let endNum+=`cat jobid/${jobid[$j]}.job|grep "Task End"|wc -l`
+done
+#endNum=`cat jobid/*.job|grep "Task End"|wc -l`
 
 echo
 echo "Total tasks: $totalNum    Submited Tasks: $jobNum   Running Tasks: `expr $jobNum - $endNum`    Finished Tasks: $endNum"
