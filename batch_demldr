@@ -1,0 +1,94 @@
+#!/bin/bash
+# Usage: ./batch_demldr /sharedata/yxtang/XDA19090126Share
+
+DATAPATH=$1
+
+# Subsidence
+folder=("center-west" "NorthEast" "Tanwan" "west")
+
+echo --------------------Subsidence Start-----------------------
+for i in ${folder[@]};
+do
+    echo $i:
+    for j in $DATAPATH/Subsidence/$i/*;
+    do
+        if [ -d $j ];
+        then
+            for k in $j/*;
+            do
+                if [ -d $k ];
+                then
+                    if [ ! -f $k/DEM/exDEM.ldr ] || [ ! -f $k/DEM/exDEM.rmghe ] ;
+                    then
+                        echo $k: exDEM.ldr-----------No
+                        #./rewrite $k
+                        ./rewrite_northeast $k
+                        cp $k/DEM/TanDEM.dem $k/DEM/exDEM.rmghe
+                    else
+                        echo $k: exDEM.ldr-----------Yes
+                    fi
+                fi
+            done
+        fi
+    done
+done
+
+echo "HuaBei"
+for j in $DATAPATH/Subsidence/HuaBei/Sentinel-1/*;
+do
+    if [ -d $j ];
+    then
+        for k in $j/*;
+        do
+            if [ -d $k ];
+            then
+                if [ ! -f $k/DEM/exDEM.ldr ] || [ ! -f $k/DEM/exDEM.rmghe ] ;
+                then
+                    echo $k: exDEM.ldr-----------No
+                    #./rewrite $k
+                    ./rewrite_northeast $k
+                    cp $k/DEM/TanDEM.dem $k/DEM/exDEM.rmghe
+                else
+                    echo $k: exDEM.ldr-----------Yes
+                fi
+            fi
+        done
+    fi
+done
+
+echo --------------------Subsidence End------------------------
+
+echo ""
+
+# Subsidence2
+folder2=("NorthEast" "West")
+
+echo --------------------Subsidence-2 Start--------------------
+for i in ${folder2[@]};
+do
+    echo $i
+    for j in $DATAPATH/Subsidence-2/$i/*;
+    do
+        if [ -d $j ];
+        then
+            for k in $j/*;
+            do
+                if [ -d $k ];
+                then
+                    if [ ! -f $k/DEM/exDEM.ldr ] || [ ! -f $k/DEM/exDEM.rmghe ] ;
+                    then
+                        echo $k: exDEM.ldr-----------No
+                        #./rewrite $k
+                        ./rewrite_northeast $k
+                        cp $k/DEM/TanDEM.dem $k/DEM/exDEM.rmghe
+                    else
+                        echo $k: exDEM.ldr-----------Yes
+                    fi
+                fi
+            done
+        fi
+    done
+done
+
+echo --------------------Subsidence-2 End---------------------
+
