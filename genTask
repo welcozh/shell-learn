@@ -1,0 +1,76 @@
+#!/bin/bash
+# Usage: ./batch_demldr /sharedata/yxtang/XDA19090126Share
+
+DATAPATH=$1
+
+if [ -f Tasks.txt ];
+then
+    echo "Tasks.txt is exist. Now delete it.."
+    rm Tasks.txt
+fi
+
+# Subsidence
+folder=("center-west" "Tanwan" "west")
+
+echo --------------------Subsidence Start-----------------------
+for i in ${folder[@]};
+do
+    echo $i:
+    for j in $DATAPATH/Subsidence/$i/*;
+    do
+        if [ -d $j ];
+        then
+            for k in $j/*;
+            do
+                if [ -d $k ];
+                then
+                    echo $k >> Tasks.txt
+                fi
+            done
+        fi
+    done
+done
+
+echo "HuaBei"
+for j in $DATAPATH/Subsidence/HuaBei/Sentinel-1/*;
+do
+    if [ -d $j ];
+    then
+        for k in $j/*;
+        do
+            if [ -d $k ];
+            then
+                echo $k >> Tasks.txt
+            fi
+        done
+    fi
+done
+
+echo --------------------Subsidence End------------------------
+
+echo ""
+
+# Subsidence2
+folder2=("NorthEast" "West")
+
+echo --------------------Subsidence-2 Start--------------------
+for i in ${folder2[@]};
+do
+    echo $i
+    for j in $DATAPATH/Subsidence-2/$i/*;
+    do
+        if [ -d $j ];
+        then
+            for k in $j/*;
+            do
+                if [ -d $k ];
+                then
+                    echo $k >> Tasks.txt
+                fi
+            done
+        fi
+    done
+done
+
+echo --------------------Subsidence-2 End---------------------
+
