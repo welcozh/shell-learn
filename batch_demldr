@@ -18,14 +18,20 @@ do
             do
                 if [ -d $k ];
                 then
-                    if [ ! -f $k/DEM/exDEM.ldr ] || [ ! -f $k/DEM/exDEM.rmghe ] ;
+                    if [ ! -f $k/DEM/exDEM.ldr ];
                     then
                         echo $k: exDEM.ldr-----------No
-                        #./rewrite $k
-                        ./rewrite_northeast $k
-                        cp $k/DEM/TanDEM.dem $k/DEM/exDEM.rmghe
+                        ./rewrite $k
                     else
                         echo $k: exDEM.ldr-----------Yes
+                    fi
+                    
+                    if [ ! -f $k/DEM/exDEM.rmghe ];
+                    then
+                        echo $k: exDEM.rmghe---------No
+                        cp $k/DEM/TanDEM.dem $k/DEM/exDEM.rmghe
+                    else
+                        echo $k: exDEM.rmghe---------Yes
                     fi
                 fi
             done
@@ -42,14 +48,20 @@ do
         do
             if [ -d $k ];
             then
-                if [ ! -f $k/DEM/exDEM.ldr ] || [ ! -f $k/DEM/exDEM.rmghe ] ;
+                if [ ! -f $k/DEM/exDEM.ldr ];
                 then
                     echo $k: exDEM.ldr-----------No
-                    #./rewrite $k
-                    ./rewrite_northeast $k
-                    cp $k/DEM/TanDEM.dem $k/DEM/exDEM.rmghe
+                    ./rewrite $k
                 else
                     echo $k: exDEM.ldr-----------Yes
+                fi
+                
+                if [ ! -f $k/DEM/exDEM.rmghe ];
+                then
+                    echo $k: exDEM.rmghe---------No
+                    cp $k/DEM/TanDEM.dem $k/DEM/exDEM.rmghe
+                else
+                    echo $k: exDEM.rmghe---------Yes
                 fi
             fi
         done
@@ -75,14 +87,20 @@ do
             do
                 if [ -d $k ];
                 then
-                    if [ ! -f $k/DEM/exDEM.ldr ] || [ ! -f $k/DEM/exDEM.rmghe ] ;
+                    if [ ! -f $k/DEM/exDEM.ldr ];
                     then
                         echo $k: exDEM.ldr-----------No
-                        #./rewrite $k
-                        ./rewrite_northeast $k
-                        cp $k/DEM/TanDEM.dem $k/DEM/exDEM.rmghe
+                        ./rewrite $k
                     else
                         echo $k: exDEM.ldr-----------Yes
+                    fi
+                    
+                    if [ ! -f $k/DEM/exDEM.rmghe ];
+                    then
+                        echo $k: exDEM.rmghe---------No
+                        cp $k/DEM/TanDEM.dem $k/DEM/exDEM.rmghe
+                    else
+                        echo $k: exDEM.rmghe---------Yes
                     fi
                 fi
             done
