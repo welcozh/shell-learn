@@ -74,8 +74,10 @@ echo ""
 
 # Subsidence2
 folder2=("NorthEast" "West")
+folder3=("1225Added" "new-added")
 
 echo --------------------Subsidence-2 Start--------------------
+
 for i in ${folder2[@]};
 do
     echo $i
@@ -107,6 +109,33 @@ do
         fi
     done
 done
+
+for i in ${folder3[@]};
+do
+    echo $i
+    for k in $DATAPATH/Subsidence-2/$i/*;
+    do
+        if [ -d $k ];
+        then
+            if [ ! -f $k/DEM/exDEM.ldr ];
+            then
+                echo $k: exDEM.ldr-----------No
+                ./rewrite $k
+            else
+                echo $k: exDEM.ldr-----------Yes
+            fi
+            
+            if [ ! -f $k/DEM/exDEM.rmghe ];
+            then
+                echo $k: exDEM.rmghe---------No
+                cp $k/DEM/TanDEM.dem $k/DEM/exDEM.rmghe
+            else
+                echo $k: exDEM.rmghe---------Yes
+            fi
+        fi
+    done
+done
+
 
 echo --------------------Subsidence-2 End---------------------
 
