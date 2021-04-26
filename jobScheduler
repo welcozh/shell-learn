@@ -13,7 +13,7 @@ while read line
 do
     if [ ! -d $line ];
     then
-        echo "Floder($line) does not exist!!! "
+        echo "Folder($line) does not exist!!! "
     else
         echo $line
         task[$i]=$line
