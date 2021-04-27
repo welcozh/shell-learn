@@ -19,7 +19,7 @@ do
         task[$i]=$line
         let i+=1
     fi
-done < task.txt
+done < Tasks.txt
 echo "-----------------------------------------------------------------"
 echo 
 
@@ -40,7 +40,7 @@ echo
 
 # 3. job scheduler
 
-maxNodeNum=10 # max number of running tasks
+maxNodeNum=25 # max number of running tasks
 
 # 3.1
 
@@ -53,7 +53,7 @@ then
     do
         DATA_PATH=${task[$k]}
         logName=${DATA_PATH##*/}
-        jobInfo=`sbatch job1.sbatch $DATA_PATH log/${logName}`
+        jobInfo=`sbatch job.sbatch $DATA_PATH log/${logName}`
         jobid[$jobNum]=${jobInfo##* }
         echo "  Submit: $DATA_PATH"
         let jobNum+=1
@@ -75,7 +75,7 @@ for((k=0;k<$maxNodeNum;k++));
 do
     DATA_PATH=${task[$k]}
     logName=${DATA_PATH##*/}
-    jobInfo=`sbatch job1.sbatch $DATA_PATH log/${logName}`
+    jobInfo=`sbatch job.sbatch $DATA_PATH log/${logName}`
     jobid[$jobNum]=${jobInfo##* }
     echo "  Submit: $DATA_PATH"
     #echo "${jobid[$jobNum]}"
@@ -120,7 +120,7 @@ do
         do
             DATA_PATH=${task[$jobNum]}
             logName=${DATA_PATH##*/}
-            jobInfo=`sbatch job1.sbatch $DATA_PATH log/${logName}`
+            jobInfo=`sbatch job.sbatch $DATA_PATH log/${logName}`
             jobid[$jobNum]=${jobInfo##* }
             echo "  Submit: $DATA_PATH"
             let jobNum+=1
