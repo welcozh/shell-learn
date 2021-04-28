@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# search key words in files, endding with .log format.
+# ./check <data_path> <key_words> <key_words1> ... 
+
+
+if [ $# == 0 ];
+then
+    echo "Please input the path and the matched keywords!"
+    exit 0
+fi
+
+if [ $# == 1 ];
+then
+    if [ ! -d $1 ];
+    then
+        echo "Path is not exist. Please input right path and the matched keywords!"
+        exit 0
+    else
+        echo "Please input matched keywords!"
+        exit 0
+    fi
+fi
+
+
+LOGPATH=$1
+if [ ! -d $LOGPATH ];
+then
+    echo "Path is not exist. Please input right path!"
+    exit 0
+fi
+
+for i in `ls $LOGPATH/*.log`;
+do
+    keys=$*
+    for key in $keys;
+    do
+        if [ $key != $LOGPATH ];
+        then
+            str=`cat $i|grep "$key"` 
+            if [ -n "$str" ];
+            then
+                echo "check: $i -- $key ----- YES"
+            else
+                echo "check: $i -- $key ----- NO"
+            fi
+        fi
+    done
+done
+
