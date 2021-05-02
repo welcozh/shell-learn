@@ -3,8 +3,8 @@
 # search key words in files, endding with .log format. You can change the keys for different match.
 # ./check <data_path> 
 
-keys1="Copy and extract zipdata have finished"
-keys2="finish down the all orbit files"
+keys1="Phase 1: Finished"
+keys2="Phase2: Release Memory"
 
 if [ $# == 0 ];
 then
@@ -22,20 +22,26 @@ fi
 for i in `ls $LOGPATH/*.log`;
 do
     str1=`cat $i|grep "$keys1"`
+    str2=`cat $i|grep "$keys2"`
     if [ -n "$str1" ];
     then
-        echo "check: $i -- $keys1 ----- YES"
+        if [ -n "$str2" ];
+        then
+            echo "check: ${i##*/} ----- $keys1 ----- YES ----- $keys2 ------ YES"
+        else
+            echo "check: ${i##*/} ----- $keys1 ----- YES ----- $keys2 ------ NO"
+        fi
     else
-        echo "check: $i -- $keys1 ----- NO"
+        echo "check: ${i##*/} ----- $keys1 ----- NO ----- $keys2 ----- NO"
     fi
     
-    str2=`cat $i|grep "$keys2"`
-    if [ -n "$str2" ];
-    then
-        echo "check: $i -- $keys2 ----- YES"
-    else
-        echo "check: $i -- $keys2 ----- NO"
-    fi
+#    str2=`cat $i|grep "$keys2"`
+#    if [ -n "$str2" ];
+#    then
+#        echo "check: $i -- $keys2 ----- YES"
+#    else
+#        echo "check: $i -- $keys2 ----- NO"
+#    fi
 done
 
 
