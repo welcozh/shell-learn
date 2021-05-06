@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# ./jobScheduler <Task File>
+
+TaskFile=$1
 
 # 1. acquire task
 
@@ -19,7 +22,7 @@ do
         task[$i]=$line
         let i+=1
     fi
-done < Tasks.txt
+done < $TaskFile
 echo "-----------------------------------------------------------------"
 echo 
 
