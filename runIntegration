@@ -1,0 +1,44 @@
+#!/bin/bash
+
+TaskFile=$1
+
+# 1. acquire task
+
+task=""
+i=0
+
+echo
+echo "Integration--Task List:"
+echo "-------------------------------------------------"
+while read line
+do
+    echo $line
+    task[$i]=$line
+    let i+=1
+done < $TaskFile
+echo "-------------------------------------------------"
+echo
+
+totalNum=${#task[@]}
+
+for str in ${task[@]};
+do
+    dp=${str%:*}
+    datapath=`cat Tasks.txt|grep "\<$dp\>"`
+
+    if [ ! -d $datapath ];
+    then
+        echo "Folder($line) does not exist!!!" 
+        continue
+    fi
+
+    temp=${str#*:}
+    para1=${temp%,*}
+    para2=${temp#*,}
+    echo 
+    echo "input: $datapath  $para1  $para2"
+    ./Integration $datapath $para1 $para2
+    echo
+done
+
+
