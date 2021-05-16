@@ -45,6 +45,13 @@ echo
 
 maxNodeNum=25 # max number of running tasks
 
+if [ ! -d log ];
+then
+    mkdir log
+    echo "make log directory..."
+    echo
+fi
+
 # 3.1
 
 jobid=""
