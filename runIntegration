@@ -24,7 +24,7 @@ totalNum=${#task[@]}
 for str in ${task[@]};
 do
     dp=${str%:*}
-    datapath=`cat Tasks.txt|grep "\<$dp\>"`
+    datapath=`cat Reference.txt|grep "\<$dp\>"`
 
     if [ ! -d $datapath ];
     then
