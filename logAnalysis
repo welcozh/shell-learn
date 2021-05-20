@@ -1,6 +1,7 @@
 #!/bin/bash
 
 logDP=$1
+filename=$2
 
 if [ ! -d $logDP ];
 then
@@ -8,13 +9,13 @@ then
     exit 0
 fi
 
-if [ -f example.csv ];
+if [ -f $filename ];
 then
     echo "Delete file with same name!"
-    rm example.csv
+    rm $filename
 fi
 
-echo Orbit, Phase1, InSARPair, S1TopoPhase, Phase2, S1SimDEM, MeanCoh, Musk, PSC, triEdgeEst, Integration, Point, Numsar, Masterid > example.csv
+echo Orbit, Phase1, InSARPair, S1TopoPhase, Phase2, S1SimDEM, MeanCoh, Musk, PSC, triEdgeEst, Integration, Point, Numsar, Masterid > $filename
 
 
 for i in `ls $logDP`;
@@ -95,7 +96,7 @@ do
         triedgeest="xxx"
     fi
 
-    echo $orbit, $phase1, $insarpairgen, $s1topophase, $phase2, $s1simdem, $meancoh, $musk, $psc, $triedgeest >> example.csv
+    echo $orbit, $phase1, $insarpairgen, $s1topophase, $phase2, $s1simdem, $meancoh, $musk, $psc, $triedgeest >> $filename
 
 done
 
