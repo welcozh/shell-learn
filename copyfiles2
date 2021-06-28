@@ -1,0 +1,41 @@
+#!/bin/bash
+# copy result files in a specified folder
+
+dp=$1
+sp=$2
+mode=$3
+
+fun(){
+    DATA_PATH=$1
+    SAVE_PATH=$2
+    for i in $DATA_PATH/*;
+    do
+        if [ -d $i ];
+        then
+            file=${i##*/}
+            echo "data-path: $i"
+            echo "save-path: $SAVE_PATH/$file"
+            cp -r $i/DEM $SAVE_PATH/$file
+            cp -r $i/orbit $SAVE_PATH/$file
+            cp -r $i/S1*SDV_2020*.SAFE $SAVE_PATH/$file
+        fi
+    done
+}
+
+if [ $mode = "1" ];
+then
+    fun $dp $sp
+fi
+
+if [ $mode = "2" ];
+then
+    for j in $dp/*;
+    do
+        file=${j##*/}
+        echo "dp: $j"
+        echo "sp: $sp/$file"
+        fun $j $sp/$file
+    done
+fi
+
+
