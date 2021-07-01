@@ -1,0 +1,120 @@
+#!/bin/bash
+
+DATA_PATH=/work/yxtang/data
+SAVE_PATH=$1
+
+Subsidence=Subsidence
+Subsidence2=Subsidence-2
+
+if [ ! -d $SAVE_PATH/$Subsidence ];
+then
+    mkdir $SAVE_PATH/$Subsidence
+fi
+
+if [ ! -d $SAVE_PATH/$Subsidence2 ];
+then
+    mkdir $SAVE_PATH/$Subsidence2
+fi
+
+# Subsidence
+
+for i in $DATA_PATH/$Subsidence/*;
+do
+    if [ -d $i ]; 
+    then
+        file=${i##*/}
+        echo $file
+        if [ "$file" = "HuaBei" ];
+        then
+            if [ ! -d $SAVE_PATH/$Subsidence/HuaBei ];
+            then
+                mkdir $SAVE_PATH/$Subsidence/HuaBei
+            fi
+            if [ ! -d $SAVE_PATH/$Subsidence/HuaBei/Sentinel-1 ];
+            then
+                mkdir $SAVE_PATH/$Subsidence/HuaBei/Sentinel-1
+            fi
+            file=$file/Sentinel-1
+        else
+            file=${i##*/}
+        fi
+        if [ ! -d $SAVE_PATH/$Subsidence/$file ];
+        then
+            echo $SAVE_PATH/$Subsidence/$file
+            mkdir $SAVE_PATH/$Subsidence/$file
+        fi
+        for j in $DATA_PATH/$Subsidence/$file/*;
+        do
+            if [ -d $j ];
+            then
+                file1=${j##*/}
+                if [ ! -d $SAVE_PATH/$Subsidence/$file/$file1 ];
+                then
+                    echo $SAVE_PATH/$Subsidence/$file/$file1
+                    mkdir $SAVE_PATH/$Subsidence/$file/$file1
+                fi
+                for k in $j/*;
+                do
+                    if [ -d $k ];
+                    then
+                        file2=${k##*/}
+                        if [ ! -d $SAVE_PATH/$Subsidence/$file/$file1/$file2 -a ${file2##*.} != "SAFE" ];
+                        then
+                            echo $SAVE_PATH/$Subsidence/$file/$file1/$file2
+                            mkdir $SAVE_PATH/$Subsidence/$file/$file1/$file2
+                        else
+                            cp -r $DATA_PATH/$Subsidence/$file/$file1/$file2/DEM $SAVE_PATH/$Subsidence/$file/$file1/$file2
+                            cp -r $DATA_PATH/$Subsidence/$file/$file1/$file2/orbit $SAVE_PATH/$Subsidence/$file/$file1/$file2
+                            cp -r $DATA_PATH/$Subsidence/$file/$file1/$file2/S1*SDV_2020*.SAFE $SAVE_PATH/$Subsidence/$file/$file1/$file2
+                        fi
+                    fi
+                done
+            fi
+        done
+    fi
+done
+
+# Subsidence-2
+
+for i in $DATA_PATH/$Subsidence2/*;
+do
+    if [ -d $i ]; 
+    then
+        file=${i##*/}
+        echo $file
+        if [ ! -d $SAVE_PATH/$Subsidence2/$file ];
+        then
+            echo $SAVE_PATH/$Subsidence2/$file
+            mkdir $SAVE_PATH/$Subsidence2/$file
+        fi
+        for j in $DATA_PATH/$Subsidence2/$file/*;
+        do
+            if [ -d $j ];
+            then
+                file1=${j##*/}
+                if [ ! -d $SAVE_PATH/$Subsidence2/$file/$file1 ];
+                then
+                    echo $SAVE_PATH/$Subsidence2/$file/$file1
+                    mkdir $SAVE_PATH/$Subsidence2/$file/$file1
+                fi
+                for k in $j/*;
+                do
+                    if [ -d $k ];
+                    then
+                        file2=${k##*/}
+                        if [ ! -d $SAVE_PATH/$Subsidence2/$file/$file1/$file2 -a ${file2##*.} != "SAFE" ];
+                        then
+                            echo $SAVE_PATH/$Subsidence2/$file/$file1/$file2
+                            mkdir $SAVE_PATH/$Subsidence2/$file/$file1/$file2
+                        else
+                            cp -r $DATA_PATH/$Subsidence/$file/$file1/$file2/DEM $SAVE_PATH/$Subsidence/$file/$file1/$file2
+                            cp -r $DATA_PATH/$Subsidence/$file/$file1/$file2/orbit $SAVE_PATH/$Subsidence/$file/$file1/$file2
+                            cp -r $DATA_PATH/$Subsidence/$file/$file1/$file2/S1*SDV_2020*.SAFE $SAVE_PATH/$Subsidence/$file/$file1/$file2
+                        fi
+
+                    fi
+                done
+            fi
+        done
+    fi
+done
