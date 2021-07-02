@@ -15,7 +15,7 @@ then
     rm $filename
 fi
 
-echo Orbit, Phase1, InSARPair, S1TopoPhase, Phase2, S1SimDEM, MeanCoh, Musk, PSC, triEdgeEst, Integration, Total, Numsar, Masterid, Point > $filename
+echo Orbit, Phase1, InSARPair, S1TopoPhase, Phase2, ComplexPro, S1SimDEM, MeanCoh, Musk, PSC, triEdgeEst, Integration, Total, Numsar, Masterid, Point > $filename
 
 
 for i in `ls $logDP`;
@@ -48,7 +48,7 @@ do
         s1topophase="xxx"
     fi
 
-    tmp=`cat $fp|grep "(S1Coh/S1BaseLine/ComplexPro) The time:"`
+    tmp=`cat $fp|grep "(S1Coh/S1BaseLine) The time:"`
     tmp1=${tmp##*: }
     phase2=${tmp1%%s*}
     if [ -z "$phase2" ];
@@ -56,6 +56,17 @@ do
         phase2="xxx"
     fi
     
+    tmp1=`cat $fp|grep "(ComplexPro) The time is: "|head -n 1`
+    complexpro1=${tmp1##*: }
+    tmp2=`cat $fp|grep "(ComplexPro) The time is: "|tail -n 1`
+    complexpro2=${tmp2##*: }
+    if [ -z "$complexpro1" ] || [ -z "$complexpro2" ];
+    then
+        complexpro="xxx"
+    else
+        complexpro=`expr ${complexpro1%%s*} + ${complexpro2%%s*}`
+    fi
+
     tmp=`cat $fp|grep "(S1SimDem) The time is:"`
     tmp1=${tmp##*: }
     s1simdem=${tmp1%%s*}
@@ -110,7 +121,7 @@ do
         masterid="xxx"
     fi
     
-    echo $orbit, $phase1, $insarpairgen, $s1topophase, $phase2, $s1simdem, $meancoh, $musk, $psc, $triedgeest, , , $numsar, $masterid >> $filename
+    echo $orbit, $phase1, $insarpairgen, $s1topophase, $phase2, $complexpro, $s1simdem, $meancoh, $musk, $psc, $triedgeest, , , $numsar, $masterid >> $filename
 
 done
 
