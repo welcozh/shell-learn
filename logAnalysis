@@ -20,12 +20,12 @@ echo Orbit, Phase1, InSARPair, S1TopoPhase, Phase2, ComplexPro, S1SimDEM, MeanCo
 
 for i in `ls $logDP`;
 do
-    if [ ! -d $i ];
+    if [ ! -d $logDP/$i ];
     then
         fp=$logDP/$i
 
         orbit=${i%%_*}
-
+        
         tmp=`cat $fp|grep "(Phase1: Compute and Merge) The time:"`
         tmp1=${tmp##*: }
         phase1=${tmp1%%s*}
@@ -57,7 +57,7 @@ do
         then
             phase2="xxx"
         fi
-
+        
         tmp1=`cat $fp|grep "(ComplexPro) The time is: "|head -n 1`
         complexpro1=${tmp1##*: }
         tmp2=`cat $fp|grep "(ComplexPro) The time is: "|tail -n 1`
@@ -76,7 +76,7 @@ do
         then
             s1simdem="xxx"
         fi
-
+        
         tmp=`cat $fp|grep "(MeanCoh) The running time is:"`
         tmp1=${tmp##*: }
         meancoh=${tmp1%%s*}
@@ -100,7 +100,7 @@ do
         then
             psc="xxx"
         fi
-
+        
         tmp=`cat $fp|grep "(triEdgeEst) The running time is:"`
         tmp1=${tmp##*: }
         triedgeest=${tmp1%%s*}
@@ -115,13 +115,14 @@ do
         then
             numsar="xxx"
         fi
-
+        
         tmp=`cat $fp|grep "MASTER_ID = "`
         masterid=${tmp##* }
         if [ -z "$masterid" ];
         then
             masterid="xxx"
         fi
+        
         echo $orbit, $phase1, $insarpairgen, $s1topophase, $phase2, $complexpro, $s1simdem, $meancoh, $musk, $psc, $triedgeest, , , $numsar, $masterid >> $filename
     fi
 done
