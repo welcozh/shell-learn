@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# usage: ./mkd  /xxx/xxx/xxx /xxx/xxx
+# eg: ./mkd /sharedata/yxtang/XDA19090126Share/world-city /work/yxtang
+
+DATAPATH=$1
+SAVEPATH=$2
+
+#file1=${DATAPATH##*XDA19090126Share/}
+#echo $file1
+
+#if [ ! -d $SAVEPATH/$file1 ];
+#then
+#    mkdir -p $SAVEPATH/$file1
+#fi
+#
+#for i in $DATAPATH/*;
+#do
+#    if [ -d $i ];
+#    then
+#        file2=${i##*/}
+#        echo $file2
+#        if [  ]
+
+
+function scandir() {
+local curdir workdir
+workdir=$1
+cd ${workdir}
+if [ ${workdir} = "/" ]
+then
+    curdir=""
+else
+    curdir=$(pwd)
+fi
+
+for dirlist in $(ls ${curdir})
+do
+    if test -d ${dirlist}
+    then
+        tmp=`echo ${dirlist}|grep -E "[0-9]{1,3}-[0-9]{1,2}"`
+        if [ ! -z $tmp ]
+        then
+            dp=$curdir/$dirlist
+            file=${dp##*XDA19090126Share/}
+            echo $SAVEPATH/$file
+            mkdir -p $SAVEPATH/$file
+        else
+            cd ${dirlist}
+            scandir ${curdir}/${dirlist}
+            cd ..
+    
+        fi
+    fi
+done
+}
+
+
+if test -d $1
+then
+    scandir $1
+elif test -f $1
+then
+    echo "You input a file but not a directory, pls reinput and try again"
+    exit 1
+else
+    echo "The directory isn't exist which you input, pls input a new one!!"
+    exit 1
+fi
