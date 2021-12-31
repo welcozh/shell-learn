@@ -1,0 +1,138 @@
+#!/bin/bash
+# Usage: ./genTask1 /sharedata/yxtang/XDA19090126Share/world-city
+# eg:
+
+tasks=()
+
+function scandir() {
+local curdir workdir
+workdir=$1
+cd ${workdir}
+if [ ${workdir} = "/" ]
+then
+    curdir=""
+else
+    curdir=$(pwd)
+fi
+
+for dirlist in $(ls ${curdir})
+do
+    if test -d ${dirlist}
+    then
+        tmp=`echo ${dirlist}|grep -E "[0-9]{1,3}-[0-9]{1,2}"`
+        if [ ! -z $tmp ]
+        then
+            dp=$curdir/$dirlist
+            tasks=("${tasks[*]}" "$dp")
+        else
+            cd ${dirlist}
+            scandir ${curdir}/${dirlist}
+            cd ..
+        fi
+    fi
+done
+}
+
+
+echo
+
+if [ $# = 0 ];
+then
+    echo "This script needs a directory, please input it."
+    exit 1
+fi
+
+echo "Check begin..."
+
+err=0
+if [ $# -gt 0 ];
+then
+    echo "Generate tasks in the directory: $1"
+    for i in $@;
+    do
+        if [ "$i" = "$1" ];
+        then
+            if [ ! -d $i ];
+            then
+                echo "Check directory: ($i)   -----   NO"
+                let err+=1
+            else
+                echo "Check directory: ($i)   -----   YES"  
+            fi
+        else
+            if [ ! -d $1/$i ];
+            then
+                echo "Check directory: ($1/$i)  -----   NO"
+                let err+=1
+            else
+                echo "Check directory: ($1/$i)    -----   YES"
+            fi
+        fi
+
+    done
+fi
+
+echo "Check finished..."
+
+if [ $err -gt 0 ];
+then
+    echo "Some directories are not exist, please check your input!"
+    echo 
+    echo "Generate Tasks terminate!"
+    exit 1
+else
+    echo
+    echo "Generate Tasks begin..."
+fi
+
+echo
+
+folder=()
+if [ $# -eq 1 ];
+then
+    folder=$1/*
+else
+    num=0
+    for dir in $@;
+    do
+        if [ $dir != $1 ];
+        then
+            folder=("${folder[*]}" "$1/$dir")
+        fi
+    done
+fi
+
+if [ -f Tasks.txt ];
+then
+    echo "Tasks.txt is exist, Now delete it.."
+    echo
+    rm Tasks.txt
+fi
+
+#SHELL_FOLDER=$(dirname $(readlink -f "$0"))
+SHELL_DIR=$(cd $(dirname $0); pwd)
+
+for j in ${folder[@]};
+do
+    tmp=`echo $j|grep -E "[0-9]{1,3}-[0-9]{1,2}"`
+    if [ ! -z $tmp ]
+    then
+        tasks=("${tasks[*]}" "$j")
+    else
+        scandir $j
+    fi
+done
+
+cd $SHELL_DIR
+
+for k in ${tasks[@]};
+do 
+    echo $k
+    echo $k >> $SHELL_DIR/Tasks.txt
+done
+
+
+echo
+echo "Generate Tasks finished..."
+
+
