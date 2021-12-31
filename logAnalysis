@@ -123,7 +123,7 @@ do
             masterid="xxx"
         fi
         
-        echo $orbit, $phase1, $insarpairgen, $s1topophase, $phase2, $complexpro, $s1simdem, $meancoh, $musk, $psc, $triedgeest, , , $numsar, $masterid >> $filename
+        echo \ $orbit, $phase1, $insarpairgen, $s1topophase, $phase2, $complexpro, $s1simdem, $meancoh, $musk, $psc, $triedgeest, , , $numsar, $masterid >> $filename
     fi
 done
 
